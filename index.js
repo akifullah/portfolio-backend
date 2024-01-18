@@ -17,8 +17,8 @@ const cvRouter = require("./routes/cvRoute");
 Connection();
 const uplaod = path.join(process.cwd(), "uploads")
 app.use(express.static(uplaod))
-app.use(cors())
 app.use(express.json())
+app.use(cors())
 
 // ROUTES
 app.use(projectRouter)
