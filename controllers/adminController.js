@@ -65,7 +65,7 @@ class adminController {
 
             await user.save();
 
-            const decode = await jwt.verify(token, process.env.LOGIN_SECRET);
+            // const decode = await jwt.verify(token, process.env.LOGIN_SECRET);
             const isAuth = await adminModel.findOne().select("-password -tokens")
             return res.status(200).send({
                 success: true,
@@ -76,7 +76,7 @@ class adminController {
 
         } catch (error) {
             console.log(error)
-            return res.status(500).send({ success: false, message: "Someting Wrong!" });
+            return res.status(500).send({ success: false, message: "Internal Server Error." });
         }
     }
 
