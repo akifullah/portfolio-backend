@@ -14,10 +14,13 @@ class eduController {
             }
 
             const edu = await eduModel(req.body).save();
+            const education = await eduModel.find();
+
             if (edu) {
                 return res.status(201).send({
                     success: true,
-                    message: "Education Added..."
+                    message: "Education Added...",
+                    edu : education
                 })
             }
 
@@ -83,10 +86,13 @@ class eduController {
 
             const { id } = req.params;
             const edu = await eduModel.findByIdAndUpdate(id, req.body);
+            const education = await eduModel.find();
+
             if (edu) {
                 return res.status(200).send({
                     success: true,
                     message: "Education Updated.",
+                    edu: education
                 })
             }
 
@@ -107,10 +113,12 @@ class eduController {
 
             const { id } = req.params;
             const edu = await eduModel.findByIdAndDelete(id);
+            const education = await eduModel.find();
             if (edu) {
                 return res.status(200).send({
                     success: true,
                     message: "Deleted.",
+                    edu: education
 
                 })
             }

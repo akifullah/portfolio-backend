@@ -1,6 +1,8 @@
 const adminModel = require("../models/adminRegister");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const path = require("path");
 class adminController {
 
     static admin = async (req, res) => {
@@ -65,7 +67,7 @@ class adminController {
 
             await user.save();
 
-            // const decode = await jwt.verify(token, process.env.LOGIN_SECRET);
+            const decode = await jwt.verify(token, process.env.LOGIN_SECRET);
             const isAuth = await adminModel.findOne().select("-password -tokens")
             return res.status(200).send({
                 success: true,
@@ -76,7 +78,7 @@ class adminController {
 
         } catch (error) {
             console.log(error)
-            return res.status(500).send({ success: false, message: "Internal Server Error." });
+            return res.status(500).send({ success: false, message: "Someting Wrong!" });
         }
     }
 
@@ -101,6 +103,10 @@ class adminController {
                     profile: req.file.filename
 
                 })
+                fs.unlink(path.join(process.cwd(), `uploads/${user.profile}`), () => {
+                    console.log('file Deleted')
+                })
+    
             } else {
                 const user = await adminModel.findOneAndUpdate({ email: email }, {
                     name,
@@ -116,8 +122,8 @@ class adminController {
 
                 });
             }
-
-            return res.status(200).send({ success: true, message: "Profile Updated!" });
+            const user = await adminModel.findOne().select("-password -tokens");
+            return res.status(200).send({ success: true, message: "Profile Updated!" , user});
         } catch (error) {
             console.log(error);
             return res.status(400).send({ success: false, message: "Something Wrong!" });

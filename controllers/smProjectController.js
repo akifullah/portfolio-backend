@@ -21,10 +21,12 @@ class projectController {
             })
 
             const saveProject = await project.save();
+            const allProject = await SmProjectModel.find();
             if (saveProject) {
                 return res.status(201).send({
                     success: true,
-                    message: "Project Added Successfully"
+                    message: "Project Added Successfully",
+                    allProject
                 })
             }
         } catch (error) {
@@ -39,7 +41,7 @@ class projectController {
         try {
             const allProject = await SmProjectModel.find();
 
-            return res.status(200).send({ projects: allProject });
+            return res.status(200).send({ success: true, allProject });
 
         } catch (error) {
             console.log(error);
@@ -72,10 +74,12 @@ class projectController {
             const project1 = await SmProjectModel.findOne({ _id: req.params.id })
             if (!req.file) {
                 const project = await SmProjectModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+                const allProject = await SmProjectModel.find();
+
                 return res.status(200).send({
                     success: true,
                     message: "Project updated",
-                    project
+                    allProject
                 })
             } else {
                 fs.unlink(path.join(process.cwd(), `uploads/${project1.image}`), () => {
@@ -91,11 +95,14 @@ class projectController {
                         github: github,
                         aos: aos
                     },
-                    { new: true })
+                    { new: true });
+                const allProject = await SmProjectModel.find();
+
+
                 return res.status(200).send({
                     success: true,
                     message: "Project updated",
-                    project
+                    allProject
                 })
             }
 
@@ -115,9 +122,13 @@ class projectController {
                 fs.unlink(path.join(process.cwd(), `uploads/${deleteProject.image}`), () => {
                     console.log('file Deleted')
                 })
+                const allProject = await SmProjectModel.find();
+
+                
                 return res.status(200).send({
                     success: true,
-                    message: "Project Deleted"
+                    message: "Project Deleted",
+                    allProject
                 })
             }
         } catch (error) {

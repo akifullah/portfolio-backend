@@ -59,9 +59,12 @@ class skillController {
                 percentage: percentage
             }).save();
 
+            const skills = await skillModel.find();
+
             return res.status(200).send({
                 success: true,
-                message: "Skill Added Successfully"
+                message: "Skill Added Successfully",
+                skills
 
             })
 
@@ -107,10 +110,11 @@ class skillController {
 
 
             const skill = await skillModel.findByIdAndUpdate(id, req.body);
-
+            const skills = await skillModel.find();
             return res.status(200).send({
                 success: true,
-                message: "Skill Updated Successfully!"
+                message: "Skill Updated Successfully!",
+                skills
             })
 
 
@@ -130,10 +134,13 @@ class skillController {
             const { id } = req.params;
             console.log(id)
             const deleteSkill = await skillModel.findOneAndDelete({ _id: id });
+            const skills = await skillModel.find();
+
             if (deleteSkill) {
                 return res.status(200).send({
                     success: true,
-                    message: "Skill Deleted!"
+                    message: "Skill Deleted!",
+                    skills
                 })
             }
         } catch (error) {

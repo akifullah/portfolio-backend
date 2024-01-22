@@ -14,10 +14,12 @@ class expController {
             }
 
             const exp = await expModel(req.body).save();
+            const experience = await expModel.find();
             if (exp) {
                 return res.status(201).send({
                     success: true,
-                    message: "Experience Added..."
+                    message: "Experience Added...",
+                    exp: experience
                 })
             }
 
@@ -83,10 +85,13 @@ class expController {
 
             const { id } = req.params;
             const exp = await expModel.findByIdAndUpdate(id, req.body);
+            const experience = await expModel.find();
+
             if (exp) {
                 return res.status(200).send({
                     success: true,
                     message: "Experience Updated.",
+                    exp: experience
                 })
             }
 
@@ -107,10 +112,13 @@ class expController {
 
             const { id } = req.params;
             const exp = await expModel.findByIdAndDelete(id);
+            const experience = await expModel.find();
+
             if (exp) {
                 return res.status(200).send({
                     success: true,
                     message: "Experience Deleted.",
+                    exp: experience
 
                 })
             }
