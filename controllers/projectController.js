@@ -115,9 +115,11 @@ class projectController {
                 fs.unlink(path.join(process.cwd(), `uploads/${deleteProject.image}`), () => {
                     console.log('file Deleted')
                 })
+                const projects = await ProjectModel.find();
                 return res.status(200).send({
                     success: true,
-                    message: "Project Deleted"
+                    message: "Project Deleted",
+                    projects
                 })
             }
         } catch (error) {
