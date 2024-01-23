@@ -47,38 +47,30 @@ class adminController {
 
             const user = await adminModel.findOne();
 
-            // const isAuth = await adminModel.findOne({ password: password }).select("-password");
-
-            // if (!isAuth) {
-            //     return res.status(400).send({
-            //         success: false,
-            //         message: "Admin Authorization failed"
-            //     })
-            // }
             const compare = await bcrypt.compare(password, user.password);
             if (!compare) {
                 return res.status(400).send({
                     success: false,
-                    message: "Admin Authorization failed"
+                    message: "Authorization failed!"
                 })
             }
-            const token = await jwt.sign({ id: user._id }, process.env.LOGIN_SECRET);
+            const token =  jwt.sign({ id: user._id }, process.env.LOGIN_SECRET);
             user.tokens = user.tokens.concat({ token: token });
 
             await user.save();
 
-            const decode = await jwt.verify(token, process.env.LOGIN_SECRET);
+            // const decode = await jwt.verify(token, process.env.LOGIN_SECRET);
             const isAuth = await adminModel.findOne().select("-password -tokens")
             return res.status(200).send({
                 success: true,
-                message: "Admin Authorized...",
+                message: "Admin Authorized!",
                 token,
                 isAuth
             })
 
         } catch (error) {
             console.log(error)
-            return res.status(500).send({ success: false, message: "Someting Wrong!" });
+            return res.status(500).send({ success: false, message: "Internal Server Error." });
         }
     }
 

@@ -17,19 +17,7 @@ const cvRouter = require("./routes/cvRoute");
 Connection();
 const uplaod = path.join(process.cwd(), "uploads")
 app.use(express.static(uplaod))
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-res.setHeader("Access-Control-Allow-Credentials", "omit");
-
-res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,POST,PUT");
-res.setHeader("Access-Control-Max-Age",  600);
-// res.setHeader("Content-Type", "Application/json") ,
-
-res.setHeader("Access-Control-Allow-Headers", 
-"Access-Control-Allow-Origin",
- "Origin,Accept, X-Requested-With,  Access-Control-Request-Method, Access-Control-Request-Headers");
-    next();
-  })
+app.use(cors())
 app.use(express.json())
 
 // ROUTES
