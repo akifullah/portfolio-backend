@@ -19,9 +19,10 @@ const uplaod = path.join(process.cwd(), "uploads")
 app.use(express.static(uplaod))
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://akif-ullah.vercel.app");
-res.setHeader("Access-Control-Allow-Credentials", "true");
+res.setHeader("Access-Control-Allow-Credentials", "omit");
 
-res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,POST,PUT");
+res.setHeader("Access-Control-Max-Age",  600);
 // res.setHeader("Content-Type", "Application/json") ,
 
 res.setHeader("Access-Control-Allow-Headers", 
